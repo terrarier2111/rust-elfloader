@@ -1,3 +1,4 @@
+#![feature(type_alias_impl_trait)]
 #![no_std]
 #![crate_name = "elfloader"]
 #![crate_type = "lib"]
@@ -19,7 +20,6 @@ use core::iter::Filter;
 
 use bitflags::bitflags;
 use xmas_elf::dynamic::*;
-use xmas_elf::program::ProgramIter;
 
 pub use xmas_elf::header::Machine;
 pub use xmas_elf::program::{Flags, ProgramHeader, ProgramHeader64};
@@ -28,7 +28,7 @@ pub use xmas_elf::symbol_table::{Entry, Entry64};
 pub use xmas_elf::{P32, P64};
 
 /// An iterator over [`ProgramHeader`] whose type is `LOAD`.
-pub type LoadableHeaders<'a, 'b> = Filter<ProgramIter<'a, 'b>, fn(&ProgramHeader) -> bool>;
+pub type LoadableHeaders<'a> = Filter<impl Iterator<Item = ProgramHeader<'a>>, fn(&ProgramHeader<'a>) -> bool>;
 pub type PAddr = u64;
 pub type VAddr = u64;
 

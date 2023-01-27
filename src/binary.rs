@@ -7,7 +7,7 @@ use core::fmt;
 use log::*;
 use xmas_elf::dynamic::Tag;
 use xmas_elf::program::ProgramHeader::{self, Ph32, Ph64};
-use xmas_elf::program::{ProgramIter, SegmentData, Type};
+use xmas_elf::program::{SegmentData, Type};
 use xmas_elf::sections::SectionData;
 pub use xmas_elf::symbol_table::{Entry, Entry64};
 use xmas_elf::ElfFile;
@@ -100,7 +100,7 @@ impl<'s> ElfBinary<'s> {
     }
 
     /// Create a slice of the program headers.
-    pub fn program_headers(&self) -> ProgramIter {
+    pub fn program_headers(&self) -> impl Iterator<Item = ProgramHeader<'_>> {
         self.file.program_iter()
     }
 
